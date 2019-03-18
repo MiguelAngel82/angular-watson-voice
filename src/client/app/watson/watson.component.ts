@@ -3,6 +3,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { WatsonService } from './watson.service';
 import { RecognizeStream } from '../core';
 import * as recognizeMicrophone from 'watson-speech/speech-to-text/recognize-microphone';
+import {MessageService} from '../message/message.service';
 
 @Component({
   selector: 'app-watson',
@@ -15,7 +16,7 @@ export class WatsonComponent implements OnInit {
   text: string;
   token: string;
 
-  constructor(private watsonService: WatsonService, private ngZone: NgZone) {}
+  constructor(private watsonService: WatsonService, private ngZone: NgZone, private messageService: MessageService) {}
 
   ngOnInit() {
     this.getToken();
@@ -38,10 +39,12 @@ export class WatsonComponent implements OnInit {
   startStream(): void {
     this.isStreaming = true;
     this.stream = recognizeMicrophone(this.setOptions(this.token));
+    this.messageService.sendMessage('Prueba');
     this.ngZone.runOutsideAngular(() => {
       this.stream.on('data', data => {
         this.ngZone.run(() => {
           this.text = data.alternatives[0].transcript;
+          this.messageService.sendMessage(this.text);
         });
       });
     });
