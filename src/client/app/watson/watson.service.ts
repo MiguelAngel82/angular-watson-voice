@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class WatsonService {
-  private apiUrl = 'http://localhost:3002/api/speech-to-text/token';
+  private apiUrl = 'https://d9slnfo1sys63.cloudfront.net/api/speech-to-text/token';
 
   constructor(private http: HttpClient) {}
 

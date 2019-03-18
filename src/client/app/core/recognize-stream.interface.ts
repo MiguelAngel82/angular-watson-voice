@@ -1,5 +1,5 @@
 export interface RecognizeStream {
-  token: string;
+  access_token: string;
   format?: boolean;
   keepMicrophone?: boolean;
   outputElement?: string;
@@ -7,4 +7,5 @@ export interface RecognizeStream {
   objectMode?: boolean;
   resultsBySpeaker?: boolean;
   mediaStream?: MediaStream;
+  url: string;
 }

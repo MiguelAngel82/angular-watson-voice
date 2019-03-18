@@ -42,8 +42,8 @@ app.use(cors())
 var sttAuthService = new watson.AuthorizationV1(
   Object.assign(
     {
-      username: process.env.SPEECH_TO_TEXT_USERNAME, // or hard-code credentials here
-      password: process.env.SPEECH_TO_TEXT_PASSWORD
+      iam_apikey: process.env.SPEECH_TO_TEXT_APIKEY, // or hard-code credentials here
+      url: process.env.SPEECH_TO_TEXT_URL
     },
     vcapServices.getCredentials('speech_to_text') // pulls credentials from environment in bluemix, otherwise returns {}
   )
@@ -51,7 +51,8 @@ var sttAuthService = new watson.AuthorizationV1(
 app.use('/api/speech-to-text/token', function(req, res) {
   sttAuthService.getToken(
     {
-      url: watson.SpeechToTextV1.URL
+      //url: watson.SpeechToTextV1.URL
+      url: 'https://gateway-lon.watsonplatform.net/speech-to-text/api'
     },
     function(err, token) {
       if (err) {

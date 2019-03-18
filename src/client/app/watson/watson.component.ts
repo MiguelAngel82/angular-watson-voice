@@ -27,10 +27,11 @@ export class WatsonComponent implements OnInit {
 
   setOptions(token: string): RecognizeStream {
     return {
-      token: token,
+      access_token: token,
       format: true,
       extractResults: true,
-      objectMode: true
+      objectMode: true,
+      url: 'wss://gateway-lon.watsonplatform.net/speech-to-text/api'
     };
   }
 
