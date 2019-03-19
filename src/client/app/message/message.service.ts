@@ -1,16 +1,34 @@
-import {Subject} from 'rxjs/Subject';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class MessageService {
-  subject: Subject<string> = new Subject<string>();
+  private url = 'http://localhost:3005';
+  private socket;
 
-  sendMessage(message: string) {
-    this.subject.next(message);
+  constructor() {
+    this.socket = io(this.url);
   }
 
-  getMessage(): Observable<any> {
-    return this.subject.asObservable();
+  public sendMessage(message) {
+    this.socket.emit('new-message', message);
   }
+
+  // getMessage(): Observable<any> {
+  //   return Observable.create((observer) => {
+  //     this.socket.on('new-message', (message) => {
+  //       observer.next(message);
+  //     });
+  //   });
+  // }
+
+  public getMessage = () => {
+    return Observable.create((observer) => {
+      this.socket.on('new-message', (message) => {
+        observer.next(message);
+      });
+    });
+  }
+
 }

@@ -7,20 +7,19 @@ import {MessageService} from './message.service';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit, OnDestroy {
+export class MessageComponent implements OnInit {
 
   message: any;
-  subscription: Subscription;
 
-  constructor(private messageService: MessageService) {
-    this.subscription = this.messageService.getMessage().subscribe(message => { this.message = message; });
-  }
+  constructor(private messageService: MessageService) { }
 
   ngOnInit() {
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.messageService.getMessage()
+      .subscribe(message => {
+          console.log('message: ' + message);
+          this.message = message;
+        }
+      );
   }
 
 }

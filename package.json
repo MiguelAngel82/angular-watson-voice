@@ -31,6 +31,8 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "rxjs": "^5.5.6",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "vcap_services": "^0.3.4",
     "watson-developer-cloud": "^3.3.0",
     "watson-speech": "^0.34.1",

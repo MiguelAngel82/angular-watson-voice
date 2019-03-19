@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const watson = require('watson-developer-cloud');
 const vcapServices = require('vcap_services');
-const cors = require('cors')
+const cors = require('cors');
 
 // allows environment properties to be set in a file named .env
 require('dotenv').load({ silent: true });
@@ -33,7 +33,7 @@ if (process.env.VCAP_SERVICES) {
 }
 
 app.use(express.static(__dirname + '/static'));
-app.use(cors())
+app.use(cors());
 
 // token endpoints
 // **Warning**: these endpoints should probably be guarded with additional authentication & authorization for production use
@@ -66,6 +66,9 @@ app.use('/api/speech-to-text/token', function(req, res) {
 });
 
 const port = process.env.PORT || process.env.VCAP_APP_PORT || 3002;
+
+
+
 app.listen(port, function() {
   console.log('Example IBM Watson Speech JS SDK client app & token server live at http://localhost:%s/', port);
 });
@@ -83,7 +86,30 @@ if (!process.env.VCAP_SERVICES) {
     key: fs.readFileSync(__dirname + '/keys/localhost.pem'),
     cert: fs.readFileSync(__dirname + '/keys/localhost.cert')
   };
-  https.createServer(options, app).listen(HTTPS_PORT, function() {
+  let server = https.createServer(options, app)
+  server.listen(HTTPS_PORT, function() {
     console.log('Secure server live at https://localhost:%s/', HTTPS_PORT);
   });
 }
+
+let http = require('http');
+let server = http.Server(app);
+
+let socketIO = require('socket.io');
+let io = socketIO(server);
+
+const socketPort = process.env.PORT || 3005;
+
+io.on('connection', (socket) => {
+  console.log('user connected');
+  socket.on('new-message', (message) => {
+    console.log(message);
+    io.emit(message);
+  });
+});
+
+server.listen(socketPort, () => {
+  console.log(`Socket server started on port: ${socketPort}`);
+});
+
+
