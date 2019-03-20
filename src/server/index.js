@@ -82,29 +82,19 @@ if (!process.env.VCAP_SERVICES) {
   const https = require('https');
   const HTTPS_PORT = 3001;
 
-  const options = {
-    key: fs.readFileSync(__dirname + '/keys/localhost.pem'),
-    cert: fs.readFileSync(__dirname + '/keys/localhost.cert')
-  };
-  let server = https.createServer(options, app)
-  server.listen(HTTPS_PORT, function() {
-    console.log('Secure server live at https://localhost:%s/', HTTPS_PORT);
-  });
-}
+const http = require('http');
+var server = http.Server(app);
 
-let http = require('http');
-let server = http.Server(app);
-
-let socketIO = require('socket.io');
-let io = socketIO(server);
+const socketIO = require('socket.io');
+var io = socketIO(server);
 
 const socketPort = process.env.PORT || 3005;
 
 io.on('connection', (socket) => {
   console.log('user connected');
+
   socket.on('new-message', (message) => {
-    console.log(message);
-    io.emit(message);
+    io.emit('new-message', message);
   });
 });
 
