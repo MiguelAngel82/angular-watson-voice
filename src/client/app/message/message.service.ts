@@ -4,7 +4,7 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class MessageService {
-  private url = 'http://localhost:3005';
+  private url = 'http://ec2-35-175-144-228.compute-1.amazonaws.com:3005';
   private socket;
 
   constructor() {
