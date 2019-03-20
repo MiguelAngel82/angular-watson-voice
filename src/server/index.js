@@ -82,6 +82,16 @@ if (!process.env.VCAP_SERVICES) {
   const https = require('https');
   const HTTPS_PORT = 3001;
 
+  const options = {
+    key: fs.readFileSync(__dirname + '/keys/localhost.pem'),
+    cert: fs.readFileSync(__dirname + '/keys/localhost.cert')
+  };
+  let server = https.createServer(options, app)
+  server.listen(HTTPS_PORT, function() {
+    console.log('Secure server live at https://localhost:%s/', HTTPS_PORT);
+  });
+}
+
 const http = require('http');
 var server = http.Server(app);
 

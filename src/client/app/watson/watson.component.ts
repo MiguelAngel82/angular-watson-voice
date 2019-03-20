@@ -39,7 +39,6 @@ export class WatsonComponent implements OnInit {
   startStream(): void {
     this.isStreaming = true;
     this.stream = recognizeMicrophone(this.setOptions(this.token));
-    this.messageService.sendMessage('Prueba');
     this.ngZone.runOutsideAngular(() => {
       this.stream.on('data', data => {
         this.ngZone.run(() => {
